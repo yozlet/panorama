@@ -1,0 +1,15 @@
+.file-form
+    %form(method='get' action='/')
+        %p
+            Dump file location:
+            %input(name='dumpfile' length='50')
+        %p
+            Ruby code location:
+            %input(name='codefile' length='50')
+        %p
+            %input(type='submit' value='Go!')
+
+- roots.each do |inv|
+    = haml :invocation, locals: {invocation: inv}
+
+

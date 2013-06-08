@@ -1,0 +1,18 @@
+.invocation
+    .header
+        %span.method-name
+            Method:
+            &= invocation.method_name
+        %span.args
+            %b Args:
+            &=invocation.args
+    .body
+        - lines = invocation.source.split('\n')
+        %pre&=invocation.source
+    .footer
+        %span.val
+            %b Returned: 
+            &=invocation.val
+    .children
+        - invocation.children.each do |inv|
+            = haml :invocation, locals: {invocation: inv}

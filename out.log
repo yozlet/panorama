@@ -1,0 +1,2 @@
+{"type":"call","method_id":"my_method","path":"cli-test.rb","lineno":4,"args":{"foo":"\"this\"","bar":"{:that=>\"the other\"}"}}
+{"type":"return","method_id":"my_method","path":"cli-test.rb","lineno":9,"val":"true"}

@@ -2,10 +2,11 @@ require 'json'
 
 class Panorama
 
-  EVENTS = ["call", "return"]
+  EVENTS = ["call", "return", "line"]
+  attr_accessor :invocations
 
-  def initialize(filename)
-    @file = File.new(filename, 'w')
+  def initialize()
+    @invocations = []
 
     # Load up event callbacks
     @callbacks = EVENTS.map {|s| self.send("tpe_#{s}".to_sym) }
@@ -24,21 +25,31 @@ class Panorama
     @callbacks.each {|c| c.disable }
   end
 
+  def dump(filename)
+    file = File.new(filename, 'w')
+    if invocations
+      invocations.each do |inv|
+        file.puts JSON.dump(inv)
+      end
+    end
+    file.close
+  end
+
   private
 
-  def _this_file(tp)
+  def this_file(tp)
     tp.path == File.realpath(__FILE__)
   end
 
   def tpe_call
     TracePoint.new(:call) do |tp|
         $__pan_current_method_id = tp.method_id
-        @file.puts JSON.dump({
+        event_hash = {
           type: 'call',
           method_id: $__pan_current_method_id,
           path: tp.path,
           lineno: tp.lineno,
-          args: tp.binding.eval(<<-'CODE')}) unless _this_file(tp)
+          args: tp.binding.eval(<<-'CODE')}
               if __method__
                 __pan_lv = local_variables
                 __pan_mid = $__pan_respond_to.bind(self).call(__method__, true) ? __method__ : $__pan_current_method_id
@@ -51,19 +62,30 @@ class Panorama
                   }
               end
           CODE
-        # outfile.puts tp.binding.eval('local_variables.join(",")')
+        @invocations << event_hash unless this_file(tp)
+    end
+  end
+
+  def tpe_line
+    TracePoint.new(:line) do |tp|
+      @invocations << {
+        type: 'line',
+        method_id: tp.method_id,
+          lineno: tp.lineno,
+          locals: tp.binding.eval('local_variables.map{|v| [ v, eval("#{v}.inspect") ]}')
+      } unless this_file(tp)
     end
   end
 
   def tpe_return
     TracePoint.new(:return) do |tp|
-      @file.puts JSON.fast_generate({
+      @invocations << {
         type: 'return',
         method_id: tp.method_id,
           path: tp.path,
           lineno: tp.lineno,
           val: tp.return_value.inspect
-      }) unless _this_file(tp)
+      } unless this_file(tp)
     end
   end
 
