@@ -93,6 +93,14 @@ class Invocation
     @line_locals[lineno]
   end
 
+  def get_line_and_local_pairs
+    lines = @source.split("\n")
+    sorted_locals = @line_locals.values_at(@line_locals.keys)
+    pairs = lines.zip(sorted_locals)
+    puts "locals for #{@method_name}, first #{@first_line}, last #{@last_line}: #{@line_locals}"
+    pairs
+  end
+
   private
 
   def new_id

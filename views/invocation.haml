@@ -7,11 +7,15 @@
             %b Args:
             &=invocation.args
     .body
-        - lines = invocation.source.split('\n')
-        %pre&=invocation.source
+        - lines = invocation.source.split("\n")
+        - lineno = invocation.first_line
+        - lines.each do |line|
+            %pre.code&=line
+            %pre.locals&=invocation.get_locals_for_line(lineno)
+            - lineno+= 1
     .footer
         %span.val
-            %b Returned: 
+            %b Returned:
             &=invocation.val
     .children
         - invocation.children.each do |inv|
