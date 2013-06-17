@@ -1,4 +1,5 @@
 require 'haml'
+require 'sass'
 require 'sinatra'
 require 'sinatra/twitter-bootstrap'
 require 'json'
@@ -23,6 +24,10 @@ get '/' do
   end
 
   haml :test, locals: {roots: roots}
+end
+
+get '/scss/:filename.scss' do
+  scss :"scss/#{params[:filename]}", style: :expanded
 end
 
 def build_stack(inv_hashes)
