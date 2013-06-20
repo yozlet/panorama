@@ -1,4 +1,4 @@
-= Panorama - A New Kind of Visual Debugger for Ruby
+# Panorama - A New Kind of Visual Debugger for Ruby
 
 *Note: This code is still at the remarkably bare-bones proof-of-concept stage, and shouldn't be considered usable for any kind of actual real debugging yet. But if you're interested in helping with a new kind of debugger, I'd love some help.*
 
@@ -10,7 +10,7 @@ Rather than stepping through your code in progress, it gathers all the data it c
 * which lines were executed during that invocation
 * the values of each local variable at that line
 
-== Current Status
+## Current Status
 
 Laughably poor. There's so much to be done:
 
@@ -25,6 +25,6 @@ Laughably poor. There's so much to be done:
 * Can it work using Ruby 1.9's set_trace_func() ?
 * A billion other things
 
-== A Very Poor Screenshot
+## A Very Poor Screenshot
 
-![I did warn you.](https://www.evernote.com/shard/s1/sh/2befe5b8-1c6e-4fcc-8445-c82f9ee1f43b/8ee13616446f957ce0af87c986a9da9f/res/34d4cd3b-6583-4666-941b-ee2b0fab92a2/skitch.png?resizeSmall&width=832)
+![I did warn you.](http://yozlet.github.io/panorama/img/screenie1.png)
