@@ -18,6 +18,8 @@ get '/' do
     require codefile
     panorama.stop
     puts panorama.invocations
+    # remove the first four, since require
+
     roots = build_stack(panorama.invocations)
   else
     roots = build_stack_from_file '/Users/yoz/Work/dio-shared/out.log'
@@ -94,6 +96,10 @@ class Invocation
     @line_locals[line[:lineno]] = line[:locals]
   end
 
+  def json_line_locals
+    JSON.dump @line_locals
+  end
+
   def get_locals_for_line(lineno)
     @line_locals[lineno]
   end
@@ -104,6 +110,10 @@ class Invocation
     pairs = lines.zip(sorted_locals)
     puts "locals for #{@method_name}, first #{@first_line}, last #{@last_line}: #{@line_locals}"
     pairs
+  end
+
+  def json_args
+    JSON.dump args
   end
 
   private

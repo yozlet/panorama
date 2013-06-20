@@ -9,6 +9,7 @@
     %pre.body
         %code{'data-language' => 'ruby',
               'data-line' => invocation.first_line}= invocation.source
+    .localsJSON&= invocation.json_line_locals
     .footer
         %span.val
             %b Returned:

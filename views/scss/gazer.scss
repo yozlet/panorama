@@ -21,8 +21,14 @@
     margin-bottom: 0;
 }
 
-.locals {
+#localsTable {
+    position: fixed;
 }
+
+.localsJSON {
+    display: none;
+}
+
 
 .footer {
     background: darkslateblue;
@@ -44,6 +50,10 @@ pre {
 .rainbow {
     border-spacing: 0;
     border-collapse: collapse;
+
+    .runLine {
+        background-color: #f2f6d3;
+    }
 
     .line {
         &:hover {

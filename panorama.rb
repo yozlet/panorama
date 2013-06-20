@@ -57,7 +57,7 @@ class Panorama
                   .call(__pan_mid)
                   .parameters
                   .inject({}) { |__pan_h,__pan_a|
-                    __pan_h[__pan_a[1]] = eval("#{__pan_a[1].to_s}.inspect") if __pan_lv.include?(__pan_a[1])
+                    __pan_h[__pan_a[1]] = eval("#{__pan_a[1]}") if __pan_lv.include?(__pan_a[1])
                     __pan_h
                   }
               end
