@@ -2,7 +2,7 @@
 
 *Note: This code is still at the remarkably bare-bones proof-of-concept stage, and shouldn't be considered usable for any kind of actual real debugging yet. But if you're interested in helping with a new kind of debugger, I'd love some help.*
 
-Panorama is a web-based visual debugger that's different from most. It's primarily inspired by the ideas of Bret Victor, especially those he presented in his essay [Learnable Programming|http://worrydream.com/#!/LearnableProgramming]. It exists thanks to Ruby 2.0's new [TracePoint API|http://ruby-doc.org/core-2.0/TracePoint.html].
+Panorama is a web-based visual debugger that's different from most. It's primarily inspired by the ideas of Bret Victor, especially those he presented in his essay (Learnable Programming)[http://worrydream.com/#!/LearnableProgramming]. It exists thanks to Ruby 2.0's new (TracePoint API)[http://ruby-doc.org/core-2.0/TracePoint.html].
 
 Rather than stepping through your code in progress, it gathers all the data it can and presents it after execution has finished. It shows you:
 * every invocation of a Ruby method, whether in your code or someone else's
