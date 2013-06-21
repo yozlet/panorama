@@ -1,15 +1,19 @@
 .file-form
     %form(method='get' action='/')
         %p
-            Dump file location:
-            %input(name='dumpfile' length='50')
-        %p
-            Ruby code location:
+            Either give me a Ruby program location:
             %input(name='codefile' length='50')
+            %i (Path relative to gazer.rb)
+        %p
+            Or a dump file location:
+            %input(name='dumpfile' length='50')
         %p
             %input(type='submit' value='Go!')
 
-- roots.each do |inv|
-    = haml :invocation, locals: {invocation: inv}
-
+- if roots
+    - roots.each do |inv|
+        = haml :invocation, locals: {invocation: inv}
+- else
+    %p
+        %b Nothing loaded yet. Point at a Ruby script and hit go!
 

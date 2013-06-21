@@ -9,9 +9,9 @@ register Sinatra::Twitter::Bootstrap::Assets
 
 
 get '/' do
-  if request['dumpfile'] != ''
+  if request['dumpfile'] && request['dumpfile'] != ''
     roots = build_stack_from_file(request['dumpfile'])
-  elsif request['codefile'] != ''
+  elsif request['codefile'] && request['codefile'] != ''
     codefile = request['codefile']
     panorama = Panorama.new
     panorama.start
@@ -22,7 +22,7 @@ get '/' do
 
     roots = build_stack(panorama.invocations)
   else
-    roots = build_stack_from_file '/Users/yoz/Work/dio-shared/out.log'
+    roots = nil
   end
 
   haml :test, locals: {roots: roots}
