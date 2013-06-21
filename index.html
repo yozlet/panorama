@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Panorama by yozlet</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Panorama</h1>
+        <h2>A New Kind of Visual Debugger for Ruby</h2>
+        <a href="https://github.com/yozlet/panorama" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a name="panorama---a-new-kind-of-visual-debugger-for-ruby" class="anchor" href="#panorama---a-new-kind-of-visual-debugger-for-ruby"><span class="octicon octicon-link"></span></a>Panorama - A New Kind of Visual Debugger for Ruby</h1>
+
+<p><em>Note: This code is still at the remarkably bare-bones proof-of-concept stage, and shouldn't be considered usable for any kind of actual real debugging yet. But if you're interested in helping with a new kind of debugger, I'd love some help.</em></p>
+
+<p>Panorama is a web-based visual debugger that's different from most. It's primarily inspired by the ideas of Bret Victor, especially those he presented in his essay <a href="http://worrydream.com/#!/LearnableProgramming">Learnable Programming</a>. It uses Ruby 2.0's new <a href="http://ruby-doc.org/core-2.0/TracePoint.html">TracePoint API</a>. I introduced it during my talk <a href="https://speakerdeck.com/yozlet/programming-is-debugging-so-debug-better">"Programming is Debugging, So Debug Better"</a> at <a href="http://opensourcebridge.org/">Open Source Bridge 2013</a>.</p>
+
+<p>Rather than stepping through your code in progress, it gathers all the data it can and presents it after execution has finished. It shows you:</p>
+
+<ul>
+<li>every invocation of a Ruby method, whether in your code or someone else's</li>
+<li>the arguments and return value of each method invocation</li>
+<li>which lines were executed during that invocation</li>
+<li>the values of each local variable at that line</li>
+</ul><h2>
+<a name="panoramas-actual-primary-aim" class="anchor" href="#panoramas-actual-primary-aim"><span class="octicon octicon-link"></span></a>Panorama's Actual Primary Aim</h2>
+
+<p>To be the debugging tool you use instead of adding <code>puts</code> statements all over your code.</p>
+
+<p>This sounds like an easy goal. However, <em>all</em> the top Ruby coders I've interviewed about this (at least four of them - <a href="https://speakerdeck.com/yozlet/programming-is-debugging-so-debug-better?slide=59">see this slide</a>) use <code>puts</code> as their first resort when debugging. So, can we make a better replacement?</p>
+
+<h2>
+<a name="current-status" class="anchor" href="#current-status"><span class="octicon octicon-link"></span></a>Current Status</h2>
+
+<p>Laughably poor. There's so much to be done:</p>
+
+<ul>
+<li>Gem packaging</li>
+<li>Actual tests</li>
+<li>Actual documentation</li>
+<li>Proper Sinatra app setup (using <a href="http://code.quirkey.com/vegas/">Vegas</a>?)</li>
+<li>Colour the run lines properly</li>
+<li>Macros to invoke from within editors</li>
+<li>Link to a test runner, so the code can be re-run continually</li>
+<li>Bret-tastic loop value display</li>
+<li>Can it work using Ruby 1.9's <code>set_trace_func()</code> ?</li>
+<li>Some kind of thread/concurrency safety would be good - at present, it does Stupid Things With Globals</li>
+<li>A billion other things</li>
+</ul><h2>
+<a name="a-very-poor-screenshot" class="anchor" href="#a-very-poor-screenshot"><span class="octicon octicon-link"></span></a>A Very Poor Screenshot</h2>
+
+<p><img src="http://yozlet.github.io/panorama/img/screenie1.png" alt="I did warn you."></p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p><strong>At present, Ruby 2.0 is required. If you need to run earlier versions of Ruby as well, I highly recommend the excellent <a href="http://github.com/sstephenson/rbenv/">rbenv</a></strong></p>
+
+<ul>
+<li>Clone the repo to a nearby ditch</li>
+<li>Run <code>bundle install</code>. (If you don't have <code>bundler</code> installed yet: <code>gem install bundler</code>)</li>
+<li>To start the webapp: <code>bundle exec rerun gazer.rb</code>
+</li>
+<li>Once you see <code>Listening on localhost:4567, CTRL+C to stop</code> , visit (http://localhost:4567) in your browser.</li>
+</ul><p>At present, the work is split between</p>
+
+<ul>
+<li>
+<code>panorama.rb</code> - a set of TracePoint hooks which build an in-memory profile of running code</li>
+<li>
+<code>gazer.rb</code> - a minimal Sinatra app which can invoke Panorama, then present the results as a browsable dataset</li>
+</ul><p>Once you have it running locally, click this for a browsable example: <a href="http://localhost:4567/?codefile=.%2Fweb-test.rb">http://localhost:4567/?codefile=.%2Fweb-test.rb</a></p>
+
+<p>If you want to try using Panorama's TracePoint hooks without the web app, <code>cli-test.rb</code> is a simple example.</p>
+
+<h2>
+<a name="what-who-how" class="anchor" href="#what-who-how"><span class="octicon octicon-link"></span></a>What Who How?</h2>
+
+<p>I'm <a href="http://yoz.com/">Yoz Grahame</a>, and I work for <a href="http://neo.com/">Neo Innovation</a>. </p>
+
+<p>Problems or patches? <a href="https://github.com/yozlet/panorama/issues">Check the issues</a>, and if it you don't see your question addressed, <a href="https://github.com/yozlet/panorama/issues/new">add one</a>.</p>
+
+<p>If this code is remotely interesting to you, I'd love to know. Send me email (I bet you can work it out) or <a href="http://twitter.com/yoz">tweet at me</a>.</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/yozlet/panorama/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/yozlet/panorama/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/yozlet/panorama"></a> is maintained by <a href="https://github.com/yozlet">yozlet</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
