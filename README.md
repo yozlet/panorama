@@ -1,6 +1,6 @@
 # Panorama - A New Kind of Visual Debugger for Ruby
 
-*Note: This code is still at the remarkably bare-bones proof-of-concept stage, and shouldn't be considered usable for any kind of actual real debugging yet. But if you're interested in helping with a new kind of debugger, I'd love some help.*
+*Note: This code is still at the incredibly rough, proof-of-concept stage with no test coverage, and shouldn't be considered usable for any kind of actual real debugging yet. But if you're interested in building a new kind of debugger, I'd love some help.*
 
 Panorama is a web-based visual debugger that's different from most. It's primarily inspired by the ideas of Bret Victor, especially those he presented in his essay [Learnable Programming](http://worrydream.com/#!/LearnableProgramming). It uses Ruby 2.0's new [TracePoint API](http://ruby-doc.org/core-2.0/TracePoint.html). I introduced it during my talk ["Programming is Debugging, So Debug Better"](https://speakerdeck.com/yozlet/programming-is-debugging-so-debug-better) at [Open Source Bridge 2013](http://opensourcebridge.org/).
 
@@ -34,7 +34,7 @@ Laughably poor. There's so much to be done:
 
 ## A Very Poor Screenshot
 
-![I did warn you.](http://yozlet.github.io/panorama/img/screenie1.png)
+![I did warn you.](http://yozlet.github.io/panorama/images/screenshots/screenie1.png)
 
 ## Getting Started
 
