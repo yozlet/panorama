@@ -13,13 +13,13 @@ get '/' do
     roots = build_stack_from_file(request['dumpfile'])
   elsif request['codefile'] && request['codefile'] != ''
     codefile = request['codefile']
+    code = File.read(codefile)
     panorama = Panorama.new
     panorama.start
-    require codefile
+    eval(code, nil, codefile, 1)
     panorama.stop
     puts panorama.invocations
-    # remove the first four, since require
-
+    # remove the first four, since they're about require's work
     roots = build_stack(panorama.invocations)
   else
     roots = nil
