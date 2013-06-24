@@ -25,6 +25,7 @@ Laughably poor. There's so much to be done:
 * Actual documentation
 * Proper Sinatra app setup (using [Vegas](http://code.quirkey.com/vegas/)?)
 * Colour the run lines properly
+* Are we handing exceptions correctly? How about passed blocks? Anything else?
 * Macros to invoke from within editors
 * Link to a test runner, so the code can be re-run continually
 * Bret-tastic loop value display
