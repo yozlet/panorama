@@ -104,9 +104,12 @@ if (window.Rainbow) window.Rainbow.linenumbers = (function(Rainbow) {
         
         // Clear the parent element
         var parent = block.parentNode;
+
+        // needed by Panorama - Yoz
+        block.table = table;
         parent.innerHTML = '';
         
         // And use the table in place of the <code> block
         parent.appendChild(table);
-    });
+    }.bind(this));
 })(window.Rainbow);

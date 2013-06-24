@@ -1,13 +1,13 @@
 $(document).ready(function() {
   $localsTable = $('#localsTable');
 
-  //colorRunLines();
+  Rainbow.onHighlight(colorRunLines);
 
   $(document).on('mouseover', 'tr.line td', null, function(e) {
     var lineNumber = parseInt(
       $(e.target).data('line-number') ||
       $(e.target).siblings().first().data('line-number') );
-    if(!lineNumber) 
+    if(!lineNumber)
       return;
     else {
       var localsData = JSON.parse ( $(e.target).parents(".invocation").
@@ -24,14 +24,10 @@ $(document).ready(function() {
   })
 });
 
-function colorRunLines() {
-  $(".invocation").each(function(el) {
-    var localsText = $(el).children(".localsJSON").text();
-    if (!localsText) return;
-    var localsData = JSON.parse (localsText);
-    var codeBlock = $(el).children("pre").first();
-    localsData.keys().foreach( function(ln) {
-      $(".line-"+ln.toString(), codeBlock).addClass('runLine');
-    });
-  })
+function colorRunLines(block, language) {
+  // block.table is added by a hack to rainbow.linenumbers
+  var localsData = JSON.parse ( $(block.table.parentNode.parentNode).children(".localsJSON").text() );
+  Object.keys(localsData).forEach( function(ln) {
+    $(".line-"+ln.toString(), block.table).addClass('runLine');
+  });
 }

@@ -56,7 +56,7 @@ If you want to try using Panorama's TracePoint hooks without the web app, `cli-t
 
 ## What Who How?
 
-I'm [Yoz Grahame](http://yoz.com/), and I work for [Neo Innovation](http://neo.com/). 
+I'm [Yoz Grahame](http://yoz.com/), and I work for [Neo Innovation](http://neo.com/).
 
 Problems or patches? [Check the issues](https://github.com/yozlet/panorama/issues), and if it you don't see your question addressed, [add one](https://github.com/yozlet/panorama/issues/new).
 
