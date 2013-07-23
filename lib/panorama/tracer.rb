@@ -1,6 +1,8 @@
 module Panorama
   class Tracer
 
+    #attr_accessor :current_invocation, :stack, :invocation_set
+
     def initialize
       @active_state = false
     end
@@ -19,12 +21,23 @@ module Panorama
 
     def trace
       invocation_set = []
-      TracePoint.new(:call) do |tp|
-        invocation_set << Invocation.new( {
-          method_name: tp.method_id,
-          lineno: tp.lineno,
-          path: tp.path
-        })
+      current_invocation = nil
+      stack = []
+      TracePoint.new(:call, :return) do |tp|
+        case tp.event
+          when :call
+            stack << current_invocation if current_invocation
+            current_invocation = Invocation.new( {
+              method_name: tp.method_id,
+              lineno: tp.lineno,
+              path: tp.path
+            })
+            invocation_set << current_invocation
+          when :return
+            current_invocation.return_value = tp.return_value
+            current_invocation.lineno = tp.lineno
+            current_invocation = stack.pop
+        end
       end.enable do
         yield
       end

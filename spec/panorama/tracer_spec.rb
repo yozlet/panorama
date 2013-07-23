@@ -24,25 +24,31 @@ describe Panorama::Tracer do
   end
 
   describe '#trace' do
+    let(:trace_result) { described_class.new.trace(&code) }
 
     context 'when given empty code' do
+      let(:code) { Proc.new {} }
       it 'returns an empty invocation set' do
-        expect(subject.trace{}).to eql([])
+        expect(trace_result).to eql([])
       end
     end
 
     context 'when given code with one invocation' do
-      let(:code) { Proc.new { def foo; true; end; foo(); } }
+      let(:code) { Proc.new { def foo; 12; end; foo(); } }
+      let(:lineno) { __LINE__ - 1 } # number of the line above
 
       it 'returns an invocation set with one Invocation' do
-        expect(subject.trace(&code)).to have(1).item
-        expect(subject.trace(&code)[0]).to be_a Panorama::Invocation
+        expect(trace_result).to have(1).item
+        expect(trace_result[0]).to be_a Panorama::Invocation
       end
 
-      it 'returns an Invocation with the name, line number and file path of the method' do
-        expect(subject.trace(&code)[0].method_name).to eql(:foo)
-        expect(subject.trace(&code)[0].lineno).to eql(35)
-        expect(subject.trace(&code)[0].path).to eql(File.expand_path(__FILE__))
+      describe 'which contains the correct attributes' do
+        subject { trace_result[0] }
+
+        its(:method_name)   { should eql :foo }
+        its(:lineno)        { should eql lineno }
+        its(:path)          { should eql File.expand_path(__FILE__) }
+        its(:return_value)  { should eql 12 }
       end
     end
 
