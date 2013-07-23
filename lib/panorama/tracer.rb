@@ -17,5 +17,19 @@ module Panorama
       @active_state = false
     end
 
+    def trace
+      invocation_set = []
+      TracePoint.new(:call) do |tp|
+        invocation_set << Invocation.new( {
+          method_name: tp.method_id,
+          lineno: tp.lineno,
+          path: tp.path
+        })
+      end.enable do
+        yield
+      end
+      invocation_set
+    end
+
   end
 end
