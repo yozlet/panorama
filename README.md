@@ -33,6 +33,8 @@ Laughably poor. There's so much to be done:
 * Some kind of thread/concurrency safety would be good - at present, it does Stupid Things With Globals
 * A billion other things
 
+Some of this work has started in the [not_laughable branch](https://github.com/yozlet/panorama/tree/not_laughable).
+
 ## A Very Poor Screenshot
 
 ![I did warn you.](http://yozlet.github.io/panorama/images/screenshots/screenie1.png)
