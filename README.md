@@ -2,7 +2,7 @@
 
 *Note: This code is still at the incredibly rough, proof-of-concept stage with no test coverage, and shouldn't be considered usable for any kind of actual real debugging yet. But if you're interested in building a new kind of debugger, I'd love some help.*
 
-[![Build Status](https://travis-ci.org/dblock/ruby-enum.png)](https://travis-ci.org/dblock/ruby-enum)
+[![Build Status](https://travis-ci.org/yozlet/panorama.png)](https://travis-ci.org/yozlet/panorama)
 
 Panorama is a web-based visual debugger that's different from most. It's primarily inspired by the ideas of Bret Victor, especially those he presented in his essay [Learnable Programming](http://worrydream.com/#!/LearnableProgramming). It uses Ruby 2.0's new [TracePoint API](http://ruby-doc.org/core-2.0/TracePoint.html). I introduced it during my talk ["Programming is Debugging, So Debug Better"](https://speakerdeck.com/yozlet/programming-is-debugging-so-debug-better) at [Open Source Bridge 2013](http://opensourcebridge.org/).
 
