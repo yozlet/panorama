@@ -1,3 +1,4 @@
 pkg/
 .sass-cache/
 .ruby-version
+tmp/
