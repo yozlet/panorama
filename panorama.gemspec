@@ -14,6 +14,10 @@ Gem::Specification.new do |s|
   s.licenses = [ "MIT" ]
   s.summary = "A Visual Debugger for Ruby"
 
+  s.add_dependency 'sinatra'
+
   s.add_development_dependency 'rspec', '~> 2.14'
   s.add_development_dependency 'guard-rspec'
+  s.add_development_dependency 'rack-test'
+
 end
