@@ -87,7 +87,14 @@ describe Panorama::Tracer do
       end
     end
 
+    context 'when given code with a syntax error' do
+    end
+
+    context 'when given code with a runtime error' do
+    end
+
+    context "when pointed at a file that doesn't exist" do
+    end
+
   end
-
-
 end
