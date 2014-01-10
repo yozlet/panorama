@@ -63,3 +63,7 @@ I'm [Yoz Grahame](http://yoz.com/), and I work for [Neo Innovation](http://neo.c
 Problems or patches? [Check the issues](https://github.com/yozlet/panorama/issues), and if it you don't see your question addressed, [add one](https://github.com/yozlet/panorama/issues/new).
 
 If this code is remotely interesting to you, I'd love to know. Send me email (I bet you can work it out) or [tweet at me](http://twitter.com/yoz).
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/yozlet/panorama/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
