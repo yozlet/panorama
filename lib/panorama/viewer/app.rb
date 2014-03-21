@@ -4,7 +4,8 @@ module Panorama
   class Viewer < Sinatra::Base
 
     set :code_path, nil
-
+    set :bind, '0.0.0.0'
+    
     get '/' do 
       "Hello World! Code path is #{settings.code_path}"
     end

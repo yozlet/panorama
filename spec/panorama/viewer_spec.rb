@@ -3,7 +3,7 @@ ENV['RACK_ENV'] = 'test'
 require 'spec_helper'
 require 'rack/test'
 require 'panorama/viewer/app.rb'
-require 'Open3'
+require 'open3'
 
 describe Panorama::Viewer do
   include Rack::Test::Methods
@@ -21,14 +21,12 @@ describe Panorama::Viewer do
   end
 
   it 'can be run from the command line' do
-    pending
     arg = code_path
     exe = 'ruby'
     appfile = File.expand_path('../../lib/panorama/viewer/app.rb', File.dirname(__FILE__))
     Open3.popen3("#{exe} #{appfile} #{arg}") do |stdin, stdout, stderr, wait_thr|
       stdin.close
       while line = stderr.gets
-        puts line
         if line =~ /start/
           break
         end
