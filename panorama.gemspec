@@ -15,9 +15,11 @@ Gem::Specification.new do |s|
   s.summary = "A Visual Debugger for Ruby"
 
   s.add_dependency 'sinatra'
+  s.add_dependency 'haml'
 
   s.add_development_dependency 'rspec', '~> 2.14'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rack-test'
-
+  s.add_development_dependency 'capybara'
+  s.add_development_dependency 'site_prism'
 end
