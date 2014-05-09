@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'sinatra'
   s.add_dependency 'haml'
 
+  s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec', '~> 2.14'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rack-test'
