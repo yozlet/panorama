@@ -67,7 +67,7 @@ describe Panorama::Tracer do
     end
 
     context 'when given code with one invocation' do
-      let(:filename) { "foo.rb" }
+      let(:filename) { "simple/one_function.rb" }
       let(:start_line) { 3 }
       let(:exit_line)  { 5 }
 

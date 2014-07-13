@@ -14,7 +14,7 @@ describe Panorama::Viewer do
   
   Capybara.app = Panorama::Viewer
   
-  let(:codepath)   { File.absolute_path("spec/fixtures/foo.rb") }
+  let(:codepath)   { File.absolute_path("spec/fixtures/simple/three_functions.rb") }
   let(:call_count) { 1 }
 
   it "says hello" do
@@ -46,13 +46,13 @@ describe Panorama::Viewer do
       @home.stats
     end
     it "with correct call count" do
-      expect(subject.call_count.text).to eql "1"
+      expect(subject.call_count.text).to eql "3"
     end
   end
 
   it 'can be run from the command line' do
-    pending "Doesn't work on Codio, apparently?"
-    arg = code_path
+    # pending "Doesn't work on Codio, apparently?"
+    arg = codepath
     exe = 'ruby'
     appfile = File.expand_path('../../lib/panorama/viewer/app.rb', File.dirname(__FILE__))
     Open3.popen3("#{exe} #{appfile} #{arg}") do |stdin, stdout, stderr, wait_thr|

@@ -1,3 +1,0 @@
-def hello
-  "woot!"
-end
