@@ -1,6 +1,7 @@
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..'))
 require 'sinatra'
 require 'panorama'
+require 'haml'
 
 module Panorama
   class Viewer < Sinatra::Base
