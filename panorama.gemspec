@@ -18,7 +18,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'haml'
 
   s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec', '~> 2.14'
+  s.add_development_dependency 'rspec', '~> 3.0'
+  s.add_development_dependency 'rspec-its'
+  s.add_development_dependency 'rspec-collection_matchers'
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rack-test'
   s.add_development_dependency 'capybara'
