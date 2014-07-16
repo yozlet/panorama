@@ -1,7 +1,8 @@
 
 def foo
-  x = 12
+  x = 4
   bar(x)
+  3 * x
 end
 
 def bar(i)

@@ -1,7 +1,7 @@
 
 
-def foo
-  12
+def foo(i)
+  i*2
 end
 
-foo()
+foo(6)

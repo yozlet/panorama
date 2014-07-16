@@ -15,13 +15,30 @@ describe Panorama::Viewer do
   Capybara.app = Panorama::Viewer
   
   let(:codepath)   { File.absolute_path("spec/fixtures/simple/three_functions.rb") }
-  let(:call_count) { 1 }
-
-  it "says hello" do
-    get '/'
-    expect(last_response).to be_ok
-    expect(last_response.body).to match('Hello World!')
-  end
+  let(:code_invocations) { [
+    {
+      method_name: "foo",
+      path: codepath,
+      start_line: '2',
+      exit_line: '6',
+      return_value: '12'
+    },
+    {
+      method_name: "bar",
+      path: codepath,
+      start_line: '8',
+      exit_line: '10',
+      return_value: '6'
+    },
+    {
+      method_name: "baz",
+      path: codepath,
+      start_line: '12',
+      exit_line: '14',
+      return_value: '6'
+    },
+    ] 
+  }
 
   describe "debugs named files" do
     it "when passed in through app settings" do
@@ -46,7 +63,25 @@ describe Panorama::Viewer do
       @home.stats
     end
     it "with correct call count" do
-      expect(subject.call_count.text).to eql "3"
+      expect(subject.call_count.text).to eql code_invocations.length.to_s
+    end
+  end
+
+  describe "prints invoked functions" do
+    subject do
+      @home = HomePage.new
+      @home.load(query: {codepath: codepath})
+      @home.invocations
+    end
+    it "with correct details" do
+      invocations = subject.collect do |section|
+        invocation = {}
+        code_invocations[0].each_key do |k|
+          invocation[k] = section.send(k).text
+        end
+        invocation
+      end
+      expect(invocations).to eql code_invocations
     end
   end
 
@@ -64,5 +99,4 @@ describe Panorama::Viewer do
       end
     end
   end
-
 end
