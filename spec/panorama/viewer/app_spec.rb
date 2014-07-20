@@ -11,70 +11,72 @@ describe Panorama::Viewer do
   def app
     Panorama::Viewer
   end
-  
-  Capybara.app = Panorama::Viewer
-  
-  let(:codepath)   { File.absolute_path("spec/fixtures/simple/three_functions.rb") }
-  let(:code_invocations) { [
+
+  Capybara.app = described_class
+
+  let(:codepath) {
+    File.absolute_path('spec/fixtures/simple/three_functions.rb')
+  }
+  let(:code_invocations) do [
     {
-      method_name: "foo",
+      method_name: 'foo',
       path: codepath,
       start_line: '2',
       exit_line: '6',
       return_value: '12'
     },
     {
-      method_name: "bar",
+      method_name: 'bar',
       path: codepath,
       start_line: '8',
       exit_line: '10',
       return_value: '6'
     },
     {
-      method_name: "baz",
+      method_name: 'baz',
       path: codepath,
       start_line: '12',
       exit_line: '14',
       return_value: '6'
-    },
-    ] 
-  }
+    }
+  ]
+  end
 
-  describe "debugs named files" do
-    it "when passed in through app settings" do
+  describe 'debugs named files' do
+    it 'when passed in through app settings' do
       Capybara.app.settings.codepath = codepath
-      @home = HomePage.new
-      @home.load
-      expect(@home.codepath.text).to match(codepath)
+      home = HomePage.new
+      home.load
+      expect(home.codepath.text).to match(codepath)
       Capybara.app.settings.codepath = nil
     end
-    
-    it "when passed in through a query string argument" do
-      @home = HomePage.new
-      @home.load(query: {codepath: codepath})
-      expect(@home.codepath.text).to match(codepath)
+
+    it 'when passed in through a query string argument' do
+      home = HomePage.new
+      home.load(query: { codepath: codepath })
+      expect(home.codepath.text).to match(codepath)
     end
   end
 
-  describe "prints debug stats" do
+  describe 'prints debug stats' do
     subject do
-      @home = HomePage.new
-      @home.load(query: {codepath: codepath})
-      @home.stats
+      home = HomePage.new
+      home.load(query: { codepath: codepath })
+      home.stats
     end
-    it "with correct call count" do
+    it 'with correct call count' do
       expect(subject.call_count.text).to eql code_invocations.length.to_s
     end
   end
 
-  describe "prints invoked functions" do
+  describe 'prints invoked functions' do
     subject do
-      @home = HomePage.new
-      @home.load(query: {codepath: codepath})
-      @home.invocations
+      home = HomePage.new
+      home.load(query: { codepath: codepath })
+      home.invocations
     end
-    it "with correct details" do
-      invocations = subject.collect do |section|
+    it 'with correct details' do
+      invocations = subject.map do |section|
         invocation = {}
         code_invocations[0].each_key do |k|
           invocation[k] = section.send(k).text
@@ -89,13 +91,13 @@ describe Panorama::Viewer do
     # pending "Doesn't work on Codio, apparently?"
     arg = codepath
     exe = 'ruby'
-    appfile = File.expand_path('../../lib/panorama/viewer/app.rb', File.dirname(__FILE__))
-    Open3.popen3("#{exe} #{appfile} #{arg}") do |stdin, stdout, stderr, wait_thr|
+    appfile = File.expand_path('../../lib/panorama/viewer/app.rb',
+                               File.dirname(__FILE__))
+    Open3.popen3("#{exe} #{appfile} #{arg}") do |stdin, _, stderr, _|
       stdin.close
-      while line = stderr.gets
-        if line =~ /start/
-          break
-        end
+      loop do
+        line = stderr.gets
+        break if line =~ /start/ || !line
       end
     end
   end

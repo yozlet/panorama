@@ -8,8 +8,8 @@ module Panorama
 
     set :codepath, nil
     set :bind, '0.0.0.0'
-    
-    get '/' do 
+
+    get '/' do
       @codepath = request['codepath'] || settings.codepath
       if @codepath
         @trace = Panorama::Tracer.new.trace_file(@codepath)
@@ -19,7 +19,7 @@ module Panorama
     end
 
     # start the server if ruby file executed directly
-    if app_file == $0
+    if app_file == $PROGRAM_NAME
       set :codepath, $1
       run!
     end

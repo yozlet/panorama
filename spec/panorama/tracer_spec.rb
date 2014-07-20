@@ -2,39 +2,21 @@ require 'spec_helper'
 
 describe Panorama::Tracer do
   it 'can be instantiated' do
-    expect(described_class.new).to be_a Panorama::Tracer
-  end
-
-  describe 'state' do
-
-    it 'starts in an inactive state' do
-      expect(subject).to_not be_active
-    end
-
-    it 'can be started' do
-      subject.start
-      expect(subject).to be_active
-    end
-
-    it 'can be stopped' do
-      subject.start
-      subject.stop
-      expect(subject).to_not be_active
-    end
+    expect(described_class.new).to be_a described_class
   end
 
   describe '#trace' do
     let(:trace_result) { described_class.new.trace(&code) }
 
     context 'when given empty code' do
-      let(:code) { Proc.new {} }
+      let(:code) { proc {} }
       it 'returns an empty invocation set' do
         expect(trace_result).to eql([])
       end
     end
 
     context 'when given code with one invocation' do
-      let(:code) { Proc.new { def foo; 12; end; foo(); } }
+      let(:code) { proc { def foo; 12; end; foo } }
       let(:lineno) { __LINE__ - 1 } # number of the line above
 
       it 'returns an invocation set with one Invocation' do
@@ -60,14 +42,14 @@ describe Panorama::Tracer do
     let(:trace_result) { described_class.new.trace_file(filepath) }
 
     context 'when given empty code' do
-      let(:filename) { "empty.rb" }
+      let(:filename) { 'empty.rb' }
       it 'returns an empty invocation set' do
         expect(trace_result).to eql([])
       end
     end
 
     context 'when given code with one invocation' do
-      let(:filename) { "simple/one_function.rb" }
+      let(:filename) { 'simple/one_function.rb' }
       let(:start_line) { 3 }
       let(:exit_line)  { 5 }
 
