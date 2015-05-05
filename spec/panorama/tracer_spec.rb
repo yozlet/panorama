@@ -70,12 +70,37 @@ describe Panorama::Tracer do
     end
 
     context 'when given code with a syntax error' do
+      let(:filename) { 'simple/syntax_error.rb' }
+
+      it 'returns an invocation set with one SyntaxError' do
+        expect(trace_result).to have(1).item
+        expect(trace_result[0]).to be_a SyntaxError
+      end
     end
 
     context 'when given code with a runtime error' do
+      let(:filename) { 'simple/runtime_error.rb' }
+
+      describe 'returns an invocation set' do
+        it 'contains two items' do
+          expect(trace_result).to have(2).items
+        end
+
+        it 'contains an Invocation' do
+          expect(trace_result[0]).to be_a Panorama::Invocation
+        end
+
+        it 'contains a RuntimeError' do
+          expect(trace_result[1]).to be_a RuntimeError
+          # Actually this should be another custom event record created
+          # by a :raise TP event
+          # TODO: have Invocation, Raise etc. descend from an Event class
+        end
+      end
     end
 
     context "when pointed at a file that doesn't exist" do
+      pending
     end
 
   end

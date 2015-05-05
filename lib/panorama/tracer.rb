@@ -4,15 +4,23 @@ module Panorama
     attr_accessor :current_invocation, :stack, :invocation_set
 
     def trace
-      tracepoint.enable { yield }
+      begin
+        tracepoint.enable { yield }
+      rescue StandardError, ScriptError => e
+        invocation_set << $!
+      end
       invocation_set
     end
 
     def trace_file(filename)
       if filename
         code = File.read(filename)
-        tracepoint.enable do
-          eval(code, nil, filename, 1)
+        begin
+          tracepoint.enable do
+            eval(code, nil, filename, 1)
+          end
+        rescue StandardError, ScriptError => e
+          invocation_set << $!
         end
       end
       invocation_set
