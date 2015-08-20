@@ -1,0 +1,16 @@
+.invocation
+  .header
+    %b Method:
+    %span.method_name
+      &= invocation.method_name
+  %pre.body
+    .path=        invocation.path
+    .start_line=  invocation.start_line
+    .exit_line=   invocation.exit_line
+  .footer
+    %b Returned:
+    %span.return_value
+      &=invocation.return_value
+  .children
+    - invocation.children.each do |inv|
+      = haml :invocation, locals: {invocation: inv}

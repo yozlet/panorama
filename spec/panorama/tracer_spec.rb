@@ -6,12 +6,17 @@ describe Panorama::Tracer do
   end
 
   describe '#trace' do
-    let(:trace_result) { described_class.new.trace(&code) }
+    let(:trace_results) { described_class.new.trace(&code) }
+    let(:invocation_set) { trace_results[:invocations] }
+    let(:root_set) { trace_results[:roots] }
 
     context 'when given empty code' do
       let(:code) { proc {} }
       it 'returns an empty invocation set' do
-        expect(trace_result).to eql([])
+        expect(invocation_set).to eql([])
+      end
+      it 'returns an empty root set' do
+        expect(root_set).to eql([])
       end
     end
 
@@ -20,17 +25,18 @@ describe Panorama::Tracer do
       let(:lineno) { __LINE__ - 1 } # number of the line above
 
       it 'returns an invocation set with one Invocation' do
-        expect(trace_result).to have(1).item
-        expect(trace_result[0]).to be_a Panorama::Invocation
+        expect(invocation_set).to have(1).item
+        expect(invocation_set[0]).to be_a Panorama::Invocation
       end
 
       describe 'which contains the correct attributes' do
-        subject { trace_result[0] }
+        subject { invocation_set[0] }
 
         its(:method_name)   { should eql :foo }
         its(:start_line)    { should eql lineno }
         its(:exit_line)     { should eql lineno }
         its(:path)          { should eql File.expand_path(__FILE__) }
+        its(:children)      { should eql [] }
         its(:return_value)  { should eql 12 }
       end
     end
@@ -39,12 +45,17 @@ describe Panorama::Tracer do
 
   describe '#trace_file' do
     let(:filepath) { File.absolute_path("spec/fixtures/#{filename}") }
-    let(:trace_result) { described_class.new.trace_file(filepath) }
+    let(:trace_results) { described_class.new.trace_file(filepath) }
+    let(:invocation_set) { trace_results[:invocations] }
+    let(:root_set) { trace_results[:roots] }
 
     context 'when given empty code' do
       let(:filename) { 'empty.rb' }
       it 'returns an empty invocation set' do
-        expect(trace_result).to eql([])
+        expect(invocation_set).to eql([])
+      end
+      it 'returns an empty root set' do
+        expect(root_set).to eql([])
       end
     end
 
@@ -54,18 +65,59 @@ describe Panorama::Tracer do
       let(:exit_line)  { 5 }
 
       it 'returns an invocation set with one Invocation' do
-        expect(trace_result).to have(1).item
-        expect(trace_result[0]).to be_a Panorama::Invocation
+        expect(invocation_set).to have(1).item
+        expect(invocation_set[0]).to be_a Panorama::Invocation
       end
 
       describe 'which contains the correct attributes' do
-        subject { trace_result[0] }
+        subject { invocation_set[0] }
 
         its(:method_name)   { should eql :foo }
         its(:start_line)    { should eql start_line }
         its(:exit_line)     { should eql exit_line }
         its(:path)          { should eql filepath }
+        its(:children)      { should eql [] }
         its(:return_value)  { should eql 12 }
+      end
+
+      it 'and is also in the root set' do
+        expect(invocation_set[0]).to eql root_set[0]
+      end
+    end
+
+    context 'when given code with chained invocations' do
+      let(:filename) { 'simple/three_functions.rb' }
+
+      it 'returns a root set with one Invocation' do
+        expect(root_set).to have(1).item
+        expect(root_set[0]).to be_a Panorama::Invocation
+      end
+
+      describe 'which has a child with the next Invocation' do
+        subject { root_set[0] }
+
+        its(:method_name)   { should eql :foo }
+        its(:children)      { should have(1).item }
+      end
+
+      describe 'which also has a child with the next Invocation' do
+        subject { root_set[0].children[0] }
+
+        its(:method_name)   { should eql :bar }
+        its(:children)      { should have(1).item }
+      end
+
+      describe 'which has the correct attributes' do
+        subject { root_set[0].children[0].children[0] }
+
+        its(:method_name)   { should eql :baz }
+        its(:children)      { should eql [] }
+      end
+
+      it 'and all three invocations are in the invocation set' do
+        expect(invocation_set[0]).to eql root_set[0]
+        expect(invocation_set[1]).to eql root_set[0].children[0]
+        expect(invocation_set[2]).to eql root_set[0].children[0].children[0]
       end
     end
 
@@ -73,8 +125,8 @@ describe Panorama::Tracer do
       let(:filename) { 'simple/syntax_error.rb' }
 
       it 'returns an invocation set with one SyntaxError' do
-        expect(trace_result).to have(1).item
-        expect(trace_result[0]).to be_a SyntaxError
+        expect(invocation_set).to have(1).item
+        expect(invocation_set[0]).to be_a SyntaxError
       end
     end
 
@@ -83,15 +135,15 @@ describe Panorama::Tracer do
 
       describe 'returns an invocation set' do
         it 'contains two items' do
-          expect(trace_result).to have(2).items
+          expect(invocation_set).to have(2).items
         end
 
         it 'contains an Invocation' do
-          expect(trace_result[0]).to be_a Panorama::Invocation
+          expect(invocation_set[0]).to be_a Panorama::Invocation
         end
 
         it 'contains a RuntimeError' do
-          expect(trace_result[1]).to be_a RuntimeError
+          expect(invocation_set[1]).to be_a RuntimeError
           # Actually this should be another custom event record created
           # by a :raise TP event
           # TODO: have Invocation, Raise etc. descend from an Event class

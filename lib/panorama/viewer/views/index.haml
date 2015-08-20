@@ -11,17 +11,5 @@
         Call count:
         %span.value= @call_count
     #invocations
-      - @trace.each do |i|
-        .invocation
-          .header
-            %b Method:
-            %span.method_name
-              &= i.method_name
-          %pre.body
-            .path=        i.path
-            .start_line=  i.start_line
-            .exit_line=   i.exit_line
-          .footer
-            %b Returned:
-            %span.return_value
-              &=i.return_value
+      - @roots.each do |inv|
+        = haml :invocation, locals: {invocation: inv}

@@ -1,7 +1,8 @@
 module Panorama
   class Tracer
 
-    attr_accessor :current_invocation, :stack, :invocation_set
+    attr_accessor :current_invocation, :stack, :invocation_set,
+                  :invocation_roots
 
     def trace
       begin
@@ -9,7 +10,7 @@ module Panorama
       rescue StandardError, ScriptError => e
         invocation_set << $!
       end
-      invocation_set
+      get_results
     end
 
     def trace_file(filename)
@@ -23,10 +24,17 @@ module Panorama
           invocation_set << $!
         end
       end
-      invocation_set
+      get_results
     end
 
     private
+
+    def get_results
+      {
+        invocations: @invocation_set,
+        roots: @invocation_roots
+      }
+    end
 
     def tracepoint
       init_tracepoint
@@ -42,18 +50,25 @@ module Panorama
 
     def init_tracepoint
       @invocation_set = []
+      @invocation_roots = []
       @current_invocation = nil
       @stack = []
     end
 
     def open_invocation(tp)
-      @stack << @current_invocation if @current_invocation
-      @current_invocation = Invocation.new(
+      new_invocation = Invocation.new(
         method_name: tp.method_id,
         start_line: tp.lineno,
         path: tp.path
       )
-      @invocation_set << @current_invocation
+      @invocation_set << new_invocation
+      if @current_invocation
+        @stack << @current_invocation
+        @current_invocation.add_child new_invocation
+      else
+        @invocation_roots << new_invocation
+      end
+      @current_invocation = new_invocation
     end
 
     def close_invocation(tp)

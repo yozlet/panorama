@@ -4,7 +4,6 @@ require 'panorama'
 require 'haml'
 require 'sass'
 
-
 module Panorama
   class Viewer < Sinatra::Application
     set :codepath, nil
@@ -14,7 +13,8 @@ module Panorama
       @codepath = request['codepath'] || settings.codepath
       if @codepath
         @trace = Panorama::Tracer.new.trace_file(@codepath)
-        @call_count = @trace.size
+        @call_count = @trace[:invocations].size
+        @roots = @trace[:roots]
       end
       haml :index
     end
@@ -28,6 +28,5 @@ module Panorama
       set :codepath, ARGV[1]
       run!
     end
-
   end
 end
