@@ -1,0 +1,37 @@
+.invocation {
+    margin-left: 2em;
+}
+
+.header {
+    background: maroon;
+    color: white;
+}
+
+.method-name {
+    font-weight: bold;
+}
+
+.args {
+    float: right;
+    background: maroon;
+}
+
+.body {
+    clear: both;
+    margin-bottom: 0;
+}
+
+#localsTable {
+    position: fixed;
+}
+
+.localsJSON {
+    display: none;
+}
+
+
+.footer {
+    background: darkslateblue;
+    color: white;
+    margin-bottom: 10px;
+}

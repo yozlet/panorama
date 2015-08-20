@@ -1,4 +1,6 @@
 %html
+  %head
+    %link{:rel => :stylesheet, :type => :"text/css", :href => "/scss/main.scss"}
   %body
     #header
       .intro
@@ -11,8 +13,15 @@
     #invocations
       - @trace.each do |i|
         .invocation
-          .method_name= i.method_name
-          .path=        i.path
-          .start_line=  i.start_line
-          .exit_line=   i.exit_line
-          .return_value=i.return_value
+          .header
+            %b Method:
+            %span.method_name
+              &= i.method_name
+          %pre.body
+            .path=        i.path
+            .start_line=  i.start_line
+            .exit_line=   i.exit_line
+          .footer
+            %b Returned:
+            %span.return_value
+              &=i.return_value

@@ -2,7 +2,7 @@ ENV['RACK_ENV'] = 'test'
 
 require 'spec_helper'
 require 'rack/test'
-require 'panorama/viewer/app.rb'
+require 'panorama/viewer/viewer.rb'
 require 'open3'
 
 describe Panorama::Viewer do
