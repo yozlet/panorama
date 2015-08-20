@@ -88,7 +88,6 @@ describe Panorama::Viewer do
   end
 
   it 'can be run from the command line' do
-    # pending "Doesn't work on Codio, apparently?"
     arg = codepath
     exe = 'ruby'
     appfile = File.expand_path('../../lib/panorama/viewer/app.rb',
