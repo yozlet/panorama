@@ -8,6 +8,7 @@ module Panorama
   class Viewer < Sinatra::Application
     set :codepath, nil
     set :bind, '0.0.0.0'
+    Haml::Options.defaults[:escape_html] = true
 
     get '/' do
       @codepath = request['codepath'] || settings.codepath

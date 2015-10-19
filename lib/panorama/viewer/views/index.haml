@@ -12,4 +12,4 @@
         %span.value= @call_count
     #invocations
       - @roots.each do |inv|
-        = haml :invocation, locals: {invocation: inv}
+        != haml :invocation, locals: {invocation: inv}

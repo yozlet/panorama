@@ -15,5 +15,8 @@ module Panorama
       @children << invocation
     end
 
+    def source_lines
+      File.open(path).to_a[start_line-1 .. exit_line-1]
+    end
   end
 end

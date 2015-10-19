@@ -5,8 +5,9 @@ class StatsSection < SitePrism::Section
 end
 
 class InvocationSection < SitePrism::Section
+  # Using XPath (aargh) as a plain selector match will match all subsections too
   element :method_name,   :xpath, "div[@class='header']/span[@class='method_name']"
-  element :path,          :xpath, "pre[@class='body']/div[@class='path']"
+  element :path,          :xpath, "div[@class='header']/span[@class='path']"
   element :start_line,    :xpath, "pre[@class='body']/div[@class='start_line']"
   element :exit_line,     :xpath, "pre[@class='body']/div[@class='exit_line']"
   element :return_value,  :xpath, "div[@class='footer']/span[@class='return_value']"
